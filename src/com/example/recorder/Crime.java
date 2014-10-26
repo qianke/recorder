@@ -1,11 +1,30 @@
 package com.example.recorder;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class Crime {
 	private UUID mId;
 	private String mTitle;
+	private Date mDate;
+	private Boolean mSolved;
 	
+	public Boolean getSolved() {
+		return mSolved;
+	}
+
+	public void setSolved(Boolean solved) {
+		mSolved = solved;
+	}
+
+	public Date getDate() {
+		return mDate;
+	}
+
+	public void setDate(Date date) {
+		mDate = date;
+	}
+
 	public Crime(){
 		mId = UUID.randomUUID();
 	}
