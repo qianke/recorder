@@ -16,7 +16,7 @@ public class Crime {
 		mDate = new Date();
 	}
 	
-	public Boolean getSolved() {
+	public Boolean isSolved() {
 		return mSolved;
 	}
 

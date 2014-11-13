@@ -1,13 +1,20 @@
 package com.example.recorder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.ListFragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class CrimeListFragment extends ListFragment {
 	private ArrayList<Crime> mCrimes;
@@ -17,15 +24,53 @@ public class CrimeListFragment extends ListFragment {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mCrimes = CrimeLab.get(getActivity()).getCrimes();
-				
-		ArrayAdapter<Crime> adapter = new ArrayAdapter<Crime>(getActivity(), R.layout.simple_list_item, mCrimes);
+
+		CrimeAdapter adapter = new CrimeAdapter(mCrimes);
 		setListAdapter(adapter);
 	}
-	
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
-		super.onListItemClick(l, v, position, id);
+		//super.onListItemClick(l, v, position, id);
 		Crime c = (Crime) getListAdapter().getItem(position);
+		Intent i = new Intent(getActivity(),CrimeActivity.class);
+		i.putExtra("ddd", c.getId());
+		startActivity(i);
+	}
+
+	
+	private class CrimeAdapter extends ArrayAdapter<Crime> {
+		int mResource;
+
+		public CrimeAdapter(ArrayList<Crime> crimes) {
+			super(getActivity(), 0, crimes);
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			// TODO Auto-generated method stub Crime c =
+			if(convertView == null){
+				convertView = getActivity().getLayoutInflater()
+						.inflate(R.layout.list_item_crime, null);
+			}
+			Crime c = getItem(position);
+
+			TextView titleTextView = (TextView) convertView
+					.findViewById(R.id.crime_list_item_titleTextView);
+			titleTextView.setText(c.getTitle());
+
+			TextView dateTextView = (TextView) convertView
+					.findViewById(R.id.crime_list_item_dateTextView);
+			dateTextView.setText(c.getDate().toString());
+
+			CheckBox solvedCheckBox = (CheckBox) convertView
+					.findViewById(R.id.crime_list_item_solvedCheckBox);
+			solvedCheckBox.setChecked(c.isSolved());
+
+			return convertView;
+		}
+
 	}
 }
