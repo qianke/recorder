@@ -1,20 +1,16 @@
 package com.example.recorder;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import android.app.ListFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class CrimeListFragment extends ListFragment {
 	private ArrayList<Crime> mCrimes;
@@ -34,8 +30,8 @@ public class CrimeListFragment extends ListFragment {
 		// TODO Auto-generated method stub
 		//super.onListItemClick(l, v, position, id);
 		Crime c = (Crime) getListAdapter().getItem(position);
-		Intent i = new Intent(getActivity(),CrimeActivity.class);
-		i.putExtra("ddd", c.getId());
+		Intent i = new Intent(getActivity(),CrimePagerActivity.class);
+		i.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
 		startActivity(i);
 	}
 
@@ -72,5 +68,13 @@ public class CrimeListFragment extends ListFragment {
 			return convertView;
 		}
 
+	}
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
 	}
 }
