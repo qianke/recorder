@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -46,6 +48,8 @@ public class CrimeFragment extends Fragment {
 
 		UUID crimeId = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
 		mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+		
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -53,6 +57,8 @@ public class CrimeFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_crime, container, false);
+		
+		getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		mTitleField = (EditText) view.findViewById(R.id.crime_title);
 		mTitleField.setText(mCrime.getTitle());
@@ -126,4 +132,28 @@ public class CrimeFragment extends Fragment {
 	public void updateDate(){
 		mDateButton.setText(mCrime.getDate().toString());
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		Log.d("xiong","item.getID:"+ item.getItemId());
+		
+		switch(item.getItemId()){
+			case android.R.id.home:
+				if(NavUtils.getParentActivityName(getActivity()) != null){
+					NavUtils.navigateUpFromSameTask(getActivity());
+				}
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		CrimeLab.get(getActivity()).saveCrimes();
+	}
+	
 }
